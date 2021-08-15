@@ -1,0 +1,17 @@
+{
+  "name": "srwp",
+  "version": "1.0.0",
+  "description": "SRWP (short for Sunshine Rainbow White Pony) is a peer-to-peer file-sharing program.",
+  "main": "index.js",
+  "scripts": {
+    "test": "node ."
+  },
+  "author": "parabirb",
+  "license": "0BSD",
+  "dependencies": {
+    "noise-network": "^1.1.2",
+    "pump": "^3.0.0",
+    "streamspeed": "^2.0.1",
+    "yargs": "^17.1.1"
+  }
+}
