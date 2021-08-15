@@ -1,0 +1,1 @@
+This repository is dedicated to the public domain.

@@ -6,15 +6,17 @@ const {hideBin} = require("yargs/helpers");
 const argv = yargs(hideBin(process.argv)).argv
 
 function receive(output) {
+    const server = noise.createServer();
     server.on("connection", (encryptedStream) => {
         console.log("Data connection established.");
 
-        const fileStream = fs.createWriteStream(output);
+        const fileStream = fs.createWriteStream(require("path").join(__dirname, output));
 
         encryptedStream.pipe(fileStream);
         let ss = new StreamSpeed();
         ss.add(encryptedStream);
         ss.on("speed", (speed) => console.log(`Receiving at ${speed/1000} KBps.`));
+        encryptedStream.on("end", () => { console.log("File received."); encryptedStream.end(); fileStream.end(); console.log("You can exit now."); })
     })
 
     const keyPair = noise.keygen();
@@ -25,9 +27,10 @@ function receive(output) {
 
 function send(channel, input) {
     const client = noise.connect(channel);
-    const fileStream = fs.createReadStream(output);
+    const fileStream = fs.createReadStream(require("path").join(__dirname, input));
 
     fileStream.pipe(client);
+    fileStream.on("end", () => { console.log("File sent."); client.end(); });
     let ss = new StreamSpeed();
     ss.add(fileStream);
     ss.on("speed", (speed) => console.log(`Sending at ${speed/1000} KBps.`));
@@ -35,10 +38,10 @@ function send(channel, input) {
 
 function main() {
     if (argv.file === undefined || (argv.channel === undefined && !argv.receive)) throw new Error("You need to specify parameters --file and --channel.");
-    if (argv.receive === true) {
+    if (argv.receive === "true") {
         receive(argv.file);
-    } else if (argv.send === true) {
-        send(channel, argv.file);
+    } else if (argv.send === "true") {
+        send(argv.channel, argv.file);
     } else {
         throw new Error("You need to specify whether --receive=true or --send=true.");
     }
