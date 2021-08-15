@@ -15,7 +15,7 @@ function receive(output) {
         encryptedStream.pipe(fileStream);
         let ss = new StreamSpeed();
         ss.add(encryptedStream);
-        ss.on("speed", (speed) => console.log(`Receiving at ${speed/1000} KBps.`));
+        ss.on("speed", (speed) => console.log(`Receiving at ${StreamSpeed.toHuman(speed)}/s.`));
         encryptedStream.on("end", () => { console.log("File received."); encryptedStream.end(); fileStream.end(); console.log("You can exit now."); })
     })
 
@@ -33,7 +33,7 @@ function send(channel, input) {
     fileStream.on("end", () => { console.log("File sent."); client.end(); });
     let ss = new StreamSpeed();
     ss.add(fileStream);
-    ss.on("speed", (speed) => console.log(`Sending at ${speed/1000} KBps.`));
+    ss.on("speed", (speed) => console.log(`Receiving at ${StreamSpeed.toHuman(speed)}/s.`));
 }
 
 function main() {
