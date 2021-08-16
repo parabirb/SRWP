@@ -33,7 +33,7 @@ function send(channel, input) {
     fileStream.on("end", () => { console.log("File sent."); client.end(); });
     let ss = new StreamSpeed();
     ss.add(fileStream);
-    ss.on("speed", (speed) => console.log(`Receiving at ${StreamSpeed.toHuman(speed)}/s.`));
+    ss.on("speed", (speed) => console.log(`Sending at ${StreamSpeed.toHuman(speed)}/s.`));
 }
 
 function main() {
