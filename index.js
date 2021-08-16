@@ -16,8 +16,8 @@ function receive(output) {
         let ss = new StreamSpeed();
         ss.add(encryptedStream);
         ss.on("speed", (speed) => console.log(`Receiving at ${StreamSpeed.toHuman(speed)}/s.`));
-        encryptedStream.on("end", () => { console.log("File received."); encryptedStream.end(); fileStream.end(); console.log("You can exit now."); })
-    })
+        encryptedStream.on("end", () => { console.log("File received."); encryptedStream.end(); fileStream.end(); console.log("You can exit now."); });
+    });
 
     const keyPair = noise.keygen();
     server.listen(keyPair, () => {
